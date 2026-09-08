@@ -3,12 +3,9 @@ import { MapPin } from "lucide-react";
 import Reveal from "./common/Reveal";
 import Kalka from "./common/Kalka";
 import { useReveal } from "./common/hooks";
-import ImageSlideshow from "./ImageSlideshow";
 import {
   C, IMG_ICON_TRAY, IMG_BRIDE_BETEL2,
-  IMG_WEDDING_HERO, IMG_RECEPTION,
-  IMG_SANGEET_1, IMG_SANGEET_2, IMG_SANGEET_3,
-  IMG_HALDI_1, IMG_HALDI_2, IMG_HALDI_3,
+  IMG_CEREMONY_SANGEET, IMG_CEREMONY_HALDI, IMG_CEREMONY_WEDDING, IMG_CEREMONY_RECEPTION,
 } from "./common/theme";
 
 /* ---------- Family / ceremony icons (small rail nodes) ---------- */
@@ -22,7 +19,7 @@ function IconGachKouto({ className }) {
   return (<svg viewBox="0 0 40 40" className={className}><path d="M12 36 L14 20 L26 20 L28 36 Z" fill={C.maroon} stroke={C.gold} strokeWidth="1" /><circle cx="20" cy="14" r="7" fill={C.turmeric} stroke={C.gold} strokeWidth="1" /><path d="M10 20 Q4 12 10 6 M30 20 Q36 12 30 6" stroke={C.green} strokeWidth="2" fill="none" strokeLinecap="round" /></svg>);
 }
 function IconSwastik({ className }) {
-  return (<svg viewBox="0 0 40 40" className={className}><g stroke={C.gold} strokeWidth="2.4" strokeLinecap="square" fill="none"><path d="M20 6 V20 H34" /><path d="M34 20 H20 V6" /><path d="M20 34 V20 H6" /><path d="M6 20 H20 V34" /></g><path d="M32 14 L38 14 M32 26 L26 26 M8 26 L2 26 M8 14 L14 14" stroke={C.gold} strokeWidth="2" /></svg>);
+  return (<svg viewBox="0 0 40 40" className={className}><g stroke={C.maroonDeep} strokeWidth="2.4" strokeLinecap="square" fill="none"><path d="M20 6 V20 H34" /><path d="M34 20 H20 V6" /><path d="M20 34 V20 H6" /><path d="M6 20 H20 V34" /></g><path d="M32 14 L38 14 M32 26 L26 26 M8 26 L2 26 M8 14 L14 14" stroke={C.maroonDeep} strokeWidth="2" /></svg>);
 }
 
 /* ---------- Shubho Drishti (bride artwork) ---------- */
@@ -171,11 +168,10 @@ function SwipeReveal({ onComplete }) {
 /* ---------- Reveal modal ---------- */
 function RevealModal({ ceremony, onClose, onComplete }) {
   const labels = { scratch: "Scratch to reveal", tap: "Tap 5 times to reveal", hold: "Press & hold to reveal", swipe: "Slide to reveal" };
-  const cover = ceremony.images ? ceremony.images[0] : ceremony.image;
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-6" style={{ background: `${C.maroonDeep}E6` }} onClick={onClose}>
       <div onClick={(e) => e.stopPropagation()} className="w-full max-w-xs rounded-xl overflow-hidden" style={{ background: C.ivory, border: `1px solid ${C.gold}` }}>
-        <div className="h-36 overflow-hidden"><img src={cover} alt={ceremony.titleEn} className="w-full h-full object-cover" style={{ objectPosition: "center 15%" }} /></div>
+        <div className="w-full aspect-video overflow-hidden"><img src={ceremony.image} alt={ceremony.titleEn} className="w-full h-full object-cover" /></div>
         <div className="p-5 text-center">
           <p className="text-xl mb-1" style={{ color: C.maroonDeep, fontFamily: "'Cormorant Garamond', serif" }}>{ceremony.titleEn}</p>
           <p className="text-xs mb-4 uppercase tracking-wide" style={{ color: `${C.brown}88` }}>{labels[ceremony.revealType]}</p>
@@ -195,60 +191,57 @@ function TimelineRow({ ceremony, isLast, revealedFlag, justRevealed, onOpen }) {
   const [ref, visible] = useReveal(0.15);
   const Icon = ceremony.Icon;
   return (
-    <div ref={ref} className="relative flex gap-4 sm:gap-6">
+    <div ref={ref} className="relative flex gap-4 sm:gap-6 md:gap-10">
       <div className="flex flex-col items-center shrink-0">
-        <div className="rounded-full flex items-center justify-center transition-all duration-700 z-10" style={{ width: 44, height: 44, background: visible ? C.gold : C.goldPale, boxShadow: visible ? `0 0 0 5px ${C.gold}22, 0 6px 16px -6px ${C.maroonDeep}` : "none", transform: visible ? "scale(1)" : "scale(0.7)" }}>
-          <Icon className="w-7 h-7" />
+        <div className="rounded-full flex items-center justify-center transition-all duration-700 z-10 w-11 h-11 md:w-16 md:h-16" style={{ background: visible ? C.gold : C.goldPale, boxShadow: visible ? `0 0 0 5px ${C.gold}22, 0 6px 16px -6px ${C.maroonDeep}` : "none", transform: visible ? "scale(1)" : "scale(0.7)" }}>
+          <Icon className="w-7 h-7 md:w-10 md:h-10" />
         </div>
         {!isLast && (
-          <div className="w-[2px] flex-1 mt-1 mb-1 overflow-hidden" style={{ background: `${C.gold}33`, minHeight: 46 }}>
+          <div className="w-[2px] md:w-[3px] flex-1 mt-1 mb-1 overflow-hidden min-h-[46px] md:min-h-[64px]" style={{ background: `${C.gold}33` }}>
             <div style={{ width: "100%", height: visible ? "100%" : "0%", background: C.gold, transition: "height 1s ease 0.3s" }} />
           </div>
         )}
       </div>
-      <Reveal delay={0.1} className="pb-10 flex-1 min-w-0">
-        <p className="text-xl leading-none mb-3" style={{ color: C.maroonDeep, fontFamily: "'Cormorant Garamond', serif" }}>{ceremony.titleEn}</p>
+      <Reveal delay={0.1} className="pb-10 md:pb-16 flex-1 min-w-0">
+        <p className="text-xl md:text-4xl leading-none mb-3 md:mb-5" style={{ color: C.maroonDeep, fontFamily: "'Cormorant Garamond', serif" }}>{ceremony.titleEn}</p>
         <div className="rounded-lg overflow-hidden relative" style={{ boxShadow: `0 10px 24px -12px ${C.maroonDeep}99` }}>
-          {ceremony.images ? <ImageSlideshow images={ceremony.images} alt={ceremony.titleEn} /> : <div className="w-full h-56 overflow-hidden"><img src={ceremony.image} alt={ceremony.titleEn} className="w-full h-full object-cover" style={{ objectPosition: "center 15%" }} /></div>}
+          <div className="w-full aspect-video overflow-hidden"><img src={ceremony.image} alt={ceremony.titleEn} className="w-full h-full object-cover" /></div>
           {!revealedFlag ? (
-            <button onClick={() => onOpen(ceremony)} className="w-full py-4 text-center text-sm font-medium uppercase tracking-wide" style={{ background: C.gold, color: C.maroonDeep }}>
+            <button onClick={() => onOpen(ceremony)} className="w-full py-4 md:py-6 text-center text-sm md:text-lg font-medium uppercase tracking-wide" style={{ background: C.gold, color: C.maroonDeep }}>
               Tap to Reveal
             </button>
           ) : (
-            <div className="relative p-5" style={{ background: C.ivory, border: `1px solid ${C.gold}55`, borderTop: "none" }}>
+            <div className="relative p-5 md:p-8" style={{ background: C.ivory, border: `1px solid ${C.gold}55`, borderTop: "none" }}>
               <CelebrationBurst show={justRevealed} />
-              <span className="text-xs tracking-widest uppercase" style={{ color: C.maroonDeep, fontFamily: "Marcellus, serif" }}>{ceremony.date}</span>
-              <p className="text-sm mt-1" style={{ color: C.brown }}>{ceremony.time}</p>
-              <div className="flex items-start gap-1.5 mt-2">
-                <MapPin size={15} color={C.green} className="mt-0.5 shrink-0" />
+              <span className="text-xs md:text-base tracking-widest uppercase" style={{ color: C.maroonDeep, fontFamily: "Marcellus, serif" }}>{ceremony.date}</span>
+              <p className="text-sm md:text-lg mt-1" style={{ color: C.brown }}>{ceremony.time}</p>
+              <div className="flex items-start gap-1.5 md:gap-2 mt-2 md:mt-4">
+                <MapPin size={17} color={C.green} className="mt-0.5 shrink-0 md:w-5 md:h-5" />
                 <div>
-                  <p className="text-sm font-medium" style={{ color: C.brown }}>{ceremony.venue}</p>
-                  <p className="text-xs" style={{ color: `${C.brown}99` }}>{ceremony.venueDetail}</p>
+                  <p className="text-sm md:text-lg font-medium" style={{ color: C.brown }}>{ceremony.venue}</p>
+                  <p className="text-xs md:text-sm" style={{ color: `${C.brown}99` }}>{ceremony.venueDetail}</p>
                 </div>
               </div>
-              <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ceremony.mapQuery)}`} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide px-4 py-1.5 rounded-full w-fit" style={{ background: C.green, color: C.ivory }}>
-                <MapPin size={12} /> View on Maps
+              <a href={ceremony.mapUrl} target="_blank" rel="noreferrer" className="mt-3 md:mt-5 inline-flex items-center gap-1.5 text-xs md:text-sm font-medium uppercase tracking-wide px-4 py-1.5 md:px-6 md:py-2.5 rounded-full w-fit" style={{ background: C.green, color: C.ivory }}>
+                <MapPin size={14} /> View on Maps
               </a>
             </div>
           )}
         </div>
-        {ceremony.id === "wedding" && revealedFlag && (
-          <div className="flex items-center gap-3 mt-4">
-            <ShubhoDristi className="w-20 h-24 shrink-0" />
-            <p className="text-xs italic" style={{ color: `${C.brown}99`, fontFamily: "'Cormorant Garamond', serif" }}>Shubho Drishti — the sacred first glance</p>
-            <img src={IMG_ICON_TRAY} alt="" className="w-16 h-16 object-contain ml-auto shrink-0" />
-          </div>
-        )}
       </Reveal>
     </div>
   );
 }
 
+const MAP_URL_HOME = "https://maps.app.goo.gl/SwACzGaL2Z6sn8Rg9";
+const MAP_URL_BANIJYA_BHABAN = "https://maps.app.goo.gl/GPjZbdu7w2tEP75f7";
+const MAP_URL_ABASHIKA_ANUSHTHAN_BHABAN = "https://maps.app.goo.gl/nBnKTB3TGBG4fVFb8";
+
 const ceremonies = [
-  { id: "sangeet", titleEn: "Sangeet Night", date: "24 November 2026", time: "7:00 PM onwards", venue: "Biswas Residence", venueDetail: "Purba Akhanagar, Kaliyaganj, Uttar Dinajpur", mapQuery: "Purba Akhanagar, Kaliyaganj, Uttar Dinajpur", Icon: IconTopor, images: [IMG_SANGEET_1, IMG_SANGEET_2, IMG_SANGEET_3], revealType: "scratch" },
-  { id: "holud", titleEn: "Gaye Holud", date: "25 November 2026", time: "10:00 AM onwards", venue: "Biswas Residence", venueDetail: "Purba Akhanagar, Kaliyaganj, Uttar Dinajpur", mapQuery: "Purba Akhanagar, Kaliyaganj, Uttar Dinajpur", Icon: IconGachKouto, images: [IMG_HALDI_1, IMG_HALDI_2, IMG_HALDI_3], revealType: "tap" },
-  { id: "wedding", titleEn: "Wedding Ceremony", date: "25 November 2026", time: "4:51 PM – 8:41 PM", venue: "Banijya Bhaban", venueDetail: "Raiganj", mapQuery: "Banijya Bhaban, Raiganj", Icon: IconSwastik, image: IMG_WEDDING_HERO, revealType: "hold" },
-  { id: "reception", titleEn: "Reception", date: "27 November 2026", time: "8:00 PM onwards", venue: "Abashika Bhaban", venueDetail: "Kaliyaganj", mapQuery: "Abashika Bhaban, Kaliyaganj", Icon: IconMukut, image: IMG_RECEPTION, revealType: "swipe" },
+  { id: "sangeet", titleEn: "Sangeet Night", date: "24 November 2026", time: "7:00 PM onwards", venue: "Biswas Residence", venueDetail: "Purba Akhanagar, Kaliyaganj", mapUrl: MAP_URL_HOME, Icon: IconTopor, image: IMG_CEREMONY_SANGEET, revealType: "scratch" },
+  { id: "holud", titleEn: "Gaye Holud", date: "25 November 2026", time: "10:00 AM onwards", venue: "Biswas Residence", venueDetail: "Purba Akhanagar, Kaliyaganj", mapUrl: MAP_URL_HOME, Icon: IconGachKouto, image: IMG_CEREMONY_HALDI, revealType: "tap" },
+  { id: "wedding", titleEn: "Wedding Ceremony", date: "25 November 2026", time: "4:51 PM – 8:41 PM", venue: "Banijya Bhaban", venueDetail: "Raiganj", mapUrl: MAP_URL_BANIJYA_BHABAN, Icon: IconSwastik, image: IMG_CEREMONY_WEDDING, revealType: "hold" },
+  { id: "reception", titleEn: "Reception", date: "27 November 2026", time: "8:00 PM onwards", venue: "Abashika Anushthan Bhaban", venueDetail: "Kaliyaganj", mapUrl: MAP_URL_ABASHIKA_ANUSHTHAN_BHABAN, Icon: IconMukut, image: IMG_CEREMONY_RECEPTION, revealType: "swipe" },
 ];
 
 /* ---------- Program roadmap / journey section ---------- */
@@ -267,15 +260,15 @@ export default function ProgramRoadmap() {
   };
 
   return (
-    <section className="relative px-6 py-16 overflow-hidden" style={{ background: `linear-gradient(180deg, ${C.goldPale} 0%, ${C.ivory} 15%, ${C.ivory} 85%, ${C.goldPale} 100%)` }}>
+    <section className="relative px-6 py-16 md:py-24 overflow-hidden" style={{ background: `linear-gradient(180deg, ${C.goldPale} 0%, ${C.ivory} 15%, ${C.ivory} 85%, ${C.goldPale} 100%)` }}>
       <Kalka className="absolute top-4 left-2 w-7 h-10 opacity-70" />
       <Kalka className="absolute top-4 right-2 w-7 h-10 opacity-70" flip />
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto">
         <Reveal>
-          <h2 className="text-center text-3xl mb-2" style={{ color: C.maroonDeep }}>The Journey Ahead</h2>
-          <p className="text-center text-sm mb-2" style={{ color: `${C.brown}99` }}>Tap each stop — every one reveals a different way</p>
+          <h2 className="text-center text-3xl md:text-5xl lg:text-6xl mb-2 md:mb-4" style={{ color: C.maroonDeep }}>The Journey Ahead</h2>
+          <p className="text-center text-sm md:text-lg mb-2" style={{ color: `${C.brown}99` }}>Tap each stop — every one reveals a different way</p>
         </Reveal>
-        <div className="mt-8">
+        <div className="mt-8 md:mt-14">
           {ceremonies.map((c, i) => (
             <TimelineRow key={c.id} ceremony={c} isLast={i === ceremonies.length - 1} revealedFlag={!!revealedMap[c.id]} justRevealed={justRevealed === c.id} onOpen={openModal} />
           ))}

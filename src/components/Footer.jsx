@@ -8,7 +8,15 @@ export default function Footer() {
       style={{ background: `linear-gradient(180deg, ${C.goldPale} 0%, ${C.maroon} 35%, ${C.maroonDeep} 100%)` }}
     >
       <Reveal>
-        <img src={IMG_HANDS} alt="" className="w-24 mx-auto mb-4 rounded-lg opacity-90" style={{ border: `1px solid ${C.gold}66` }} />
+        <img
+          src={IMG_HANDS}
+          alt=""
+          className="w-32 mx-auto mb-4"
+          style={{
+            WebkitMaskImage: "radial-gradient(circle, #000 55%, transparent 85%)",
+            maskImage: "radial-gradient(circle, #000 55%, transparent 85%)",
+          }}
+        />
       </Reveal>
       <Reveal delay={0.1}>
         <p className="text-lg" style={{ color: C.ivory }}>With love, Manomoy & Rumki</p>

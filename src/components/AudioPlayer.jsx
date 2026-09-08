@@ -2,38 +2,28 @@ import { useState, useRef, useEffect } from "react";
 import { Volume2, VolumeX } from "lucide-react";
 import { C, AUDIO_SRC } from "./common/theme";
 
-/* Only the opening LOOP_SECONDS of the track are used, looped indefinitely.
-   Consecutive iterations overlap by CROSSFADE_SECONDS with an equal-length
-   fade-out/fade-in so the restart is masked rather than an audible jump cut. */
-const LOOP_SECONDS = 31;
-const CROSSFADE_SECONDS = 2.5;
+/* Plays once, for the opening PLAY_SECONDS of the track, then stops
+   (with a short fade-out instead of an abrupt cut). No looping. */
+const PLAY_SECONDS = 31;
+const FADE_OUT_SECONDS = 2.5;
 const TARGET_VOLUME = 0.5;
 
-function scheduleLoopIteration(ctx, masterGain, buffer, startAt, timeoutRef, isFirst) {
+function playOnce(ctx, masterGain, buffer) {
   const source = ctx.createBufferSource();
   source.buffer = buffer;
   const gainNode = ctx.createGain();
   source.connect(gainNode);
   gainNode.connect(masterGain);
 
-  const fadeStart = startAt + LOOP_SECONDS - CROSSFADE_SECONDS;
-  const loopEnd = startAt + LOOP_SECONDS;
+  const startAt = ctx.currentTime;
+  const fadeStart = startAt + PLAY_SECONDS - FADE_OUT_SECONDS;
+  const playEnd = startAt + PLAY_SECONDS;
 
-  if (isFirst) {
-    gainNode.gain.setValueAtTime(1, startAt);
-  } else {
-    gainNode.gain.setValueAtTime(0, startAt);
-    gainNode.gain.linearRampToValueAtTime(1, startAt + CROSSFADE_SECONDS);
-  }
+  gainNode.gain.setValueAtTime(1, startAt);
   gainNode.gain.setValueAtTime(1, fadeStart);
-  gainNode.gain.linearRampToValueAtTime(0, loopEnd);
+  gainNode.gain.linearRampToValueAtTime(0, playEnd);
 
-  source.start(startAt, 0, LOOP_SECONDS);
-
-  const msUntilNextSchedule = Math.max(0, (fadeStart - ctx.currentTime) * 1000);
-  timeoutRef.current = setTimeout(() => {
-    scheduleLoopIteration(ctx, masterGain, buffer, fadeStart, timeoutRef, false);
-  }, msUntilNextSchedule);
+  source.start(startAt, 0, PLAY_SECONDS);
 }
 
 /* ---------- Background music: plays once the envelope opens, mute toggle while open ---------- */
@@ -42,13 +32,9 @@ export default function AudioPlayer({ phase }) {
   const ctxRef = useRef(null);
   const masterGainRef = useRef(null);
   const startedRef = useRef(false);
-  const nextTimeoutRef = useRef(null);
 
   useEffect(() => {
-    return () => {
-      if (nextTimeoutRef.current) clearTimeout(nextTimeoutRef.current);
-      ctxRef.current?.close();
-    };
+    return () => { ctxRef.current?.close(); };
   }, []);
 
   useEffect(() => {
@@ -71,7 +57,7 @@ export default function AudioPlayer({ phase }) {
       .then((data) => ctx.decodeAudioData(data))
       .then((buffer) => {
         if (ctx.state === "suspended") ctx.resume();
-        scheduleLoopIteration(ctx, masterGain, buffer, ctx.currentTime, nextTimeoutRef, true);
+        playOnce(ctx, masterGain, buffer);
       })
       .catch(() => {});
   }, [phase]);

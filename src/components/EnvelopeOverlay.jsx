@@ -20,7 +20,7 @@ export default function EnvelopeOverlay({ phase, onOpen }) {
         opacity: done ? 0 : 1,
         transform: done ? "scale(1.15)" : "scale(1)",
         pointerEvents: done ? "none" : "auto",
-        transition: "opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s",
+        transition: "opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s",
       }}
     >
       {sparkles.map((s, i) => (
@@ -33,6 +33,10 @@ export default function EnvelopeOverlay({ phase, onOpen }) {
         <div className="relative" style={{ width: 220, height: 150, animation: opening ? "envelopeBounce 0.9s ease" : "none" }}>
           {/* envelope back pocket */}
           <div className="absolute inset-0 rounded-md" style={{ background: C.goldPale, border: `1.5px solid ${C.gold}` }} />
+
+          {/* left & right side folds, completing the classic 4-flap envelope shape */}
+          <div className="absolute inset-0" style={{ clipPath: "polygon(0% 0%, 0% 100%, 48% 50%)", background: `linear-gradient(135deg, ${C.gold}55, transparent 80%)`, zIndex: 1 }} />
+          <div className="absolute inset-0" style={{ clipPath: "polygon(100% 0%, 100% 100%, 52% 50%)", background: `linear-gradient(225deg, ${C.gold}55, transparent 80%)`, zIndex: 1 }} />
 
           {/* letter card sliding up from inside */}
           <div className="absolute left-1/2 rounded-sm flex items-center justify-center" style={{
@@ -48,14 +52,15 @@ export default function EnvelopeOverlay({ phase, onOpen }) {
           {/* bottom pocket triangle (in front of letter until flap opens) */}
           <div className="absolute bottom-0 left-0 w-full" style={{ height: 78, background: C.maroon, clipPath: "polygon(0% 100%, 100% 100%, 50% 15%)", zIndex: active ? 1 : 3 }} />
 
-          {/* flap - rotates open like a real envelope */}
+          {/* flap - rotates open like a real envelope; once it's rotated past edge-on it
+              recedes behind the letter/pocket instead of always painting on top */}
           <div className="absolute top-0 left-0 w-full origin-top" style={{
             height: 78, background: `linear-gradient(160deg, ${C.gold}, ${C.goldLight})`,
             clipPath: "polygon(0% 0%, 100% 0%, 50% 92%)",
             transform: active ? "rotateX(178deg)" : "rotateX(0deg)",
             transformStyle: "preserve-3d",
-            transition: "transform 0.85s cubic-bezier(.3,.7,.3,1)",
-            zIndex: 4,
+            transition: "transform 0.85s cubic-bezier(.3,.7,.3,1), z-index 0s linear 0.4s",
+            zIndex: active ? 0 : 4,
             boxShadow: `0 2px 6px ${C.maroonDeep}55`,
           }} />
 
