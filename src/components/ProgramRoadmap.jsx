@@ -111,7 +111,7 @@ function TapReveal({ onComplete }) {
       <div className="w-full h-3 rounded-full overflow-hidden" style={{ background: `${C.gold}33` }}>
         <div style={{ width: `${taps * 20}%`, height: "100%", background: C.gold, transition: "width 0.3s ease" }} />
       </div>
-      <button onClick={handleTap} className="w-20 h-20 rounded-full text-xs font-medium" style={{ background: C.maroonDeep, color: C.goldLight, border: `2px solid ${C.gold}`, boxShadow: taps > 0 ? `0 0 ${taps * 6}px ${C.gold}88` : "none" }}>
+      <button onClick={handleTap} className="w-20 h-20 rounded-full text-sm font-medium" style={{ background: C.maroonDeep, color: C.goldLight, border: `2px solid ${C.gold}`, boxShadow: taps > 0 ? `0 0 ${taps * 6}px ${C.gold}88` : "none" }}>
         Tap ({taps}/5)
       </button>
     </div>
@@ -139,7 +139,7 @@ function HoldReveal({ onComplete }) {
       <div className="w-full h-3 rounded-full overflow-hidden" style={{ background: `${C.gold}33` }}>
         <div style={{ width: `${progress}%`, height: "100%", background: C.gold, transition: "width 0.1s linear" }} />
       </div>
-      <button onMouseDown={start} onMouseUp={stop} onMouseLeave={stop} onTouchStart={start} onTouchEnd={stop} className="w-24 h-24 rounded-full text-xs font-medium select-none" style={{ background: C.maroonDeep, color: C.goldLight, border: `2px solid ${C.gold}`, boxShadow: progress > 0 ? `0 0 ${progress / 3}px ${C.gold}88` : "none" }}>
+      <button onMouseDown={start} onMouseUp={stop} onMouseLeave={stop} onTouchStart={start} onTouchEnd={stop} className="w-24 h-24 rounded-full text-sm font-medium select-none" style={{ background: C.maroonDeep, color: C.goldLight, border: `2px solid ${C.gold}`, boxShadow: progress > 0 ? `0 0 ${progress / 3}px ${C.gold}88` : "none" }}>
         Press &amp; Hold
       </button>
     </div>
@@ -160,7 +160,7 @@ function SwipeReveal({ onComplete }) {
         <div style={{ width: `${val}%`, height: "100%", background: C.gold }} />
       </div>
       <input type="range" min="0" max="100" value={val} onChange={handleChange} className="w-full" style={{ accentColor: C.gold }} />
-      <p className="text-xs" style={{ color: `${C.brown}88` }}>Slide the ribbon all the way &rarr;</p>
+      <p className="text-sm" style={{ color: `${C.brown}88` }}>Slide the ribbon all the way &rarr;</p>
     </div>
   );
 }
@@ -174,12 +174,12 @@ function RevealModal({ ceremony, onClose, onComplete }) {
         <div className="w-full aspect-video overflow-hidden"><img src={ceremony.image} alt={ceremony.titleEn} className="w-full h-full object-cover" /></div>
         <div className="p-5 text-center">
           <p className="text-xl mb-1" style={{ color: C.maroonDeep, fontFamily: "'Cormorant Garamond', serif" }}>{ceremony.titleEn}</p>
-          <p className="text-xs mb-4 uppercase tracking-wide" style={{ color: `${C.brown}88` }}>{labels[ceremony.revealType]}</p>
+          <p className="text-sm mb-4 uppercase tracking-wide" style={{ color: `${C.brown}88` }}>{labels[ceremony.revealType]}</p>
           {ceremony.revealType === "scratch" && <ScratchReveal onComplete={onComplete} />}
           {ceremony.revealType === "tap" && <TapReveal onComplete={onComplete} />}
           {ceremony.revealType === "hold" && <HoldReveal onComplete={onComplete} />}
           {ceremony.revealType === "swipe" && <SwipeReveal onComplete={onComplete} />}
-          <button onClick={onClose} className="mt-5 text-xs uppercase tracking-wide" style={{ color: `${C.brown}77` }}>Close</button>
+          <button onClick={onClose} className="mt-5 text-sm uppercase tracking-wide" style={{ color: `${C.brown}77` }}>Close</button>
         </div>
       </div>
     </div>
@@ -207,22 +207,22 @@ function TimelineRow({ ceremony, isLast, revealedFlag, justRevealed, onOpen }) {
         <div className="rounded-lg overflow-hidden relative" style={{ boxShadow: `0 10px 24px -12px ${C.maroonDeep}99` }}>
           <div className="w-full aspect-video overflow-hidden"><img src={ceremony.image} alt={ceremony.titleEn} className="w-full h-full object-cover" /></div>
           {!revealedFlag ? (
-            <button onClick={() => onOpen(ceremony)} className="w-full py-4 md:py-6 text-center text-sm md:text-lg font-medium uppercase tracking-wide" style={{ background: C.gold, color: C.maroonDeep }}>
+            <button onClick={() => onOpen(ceremony)} className="w-full py-4 md:py-6 text-center text-base md:text-lg font-medium uppercase tracking-wide" style={{ background: C.gold, color: C.maroonDeep }}>
               Tap to Reveal
             </button>
           ) : (
             <div className="relative p-5 md:p-8" style={{ background: C.ivory, border: `1px solid ${C.gold}55`, borderTop: "none" }}>
               <CelebrationBurst show={justRevealed} />
-              <span className="text-xs md:text-base tracking-widest uppercase" style={{ color: C.maroonDeep, fontFamily: "Marcellus, serif" }}>{ceremony.date}</span>
-              <p className="text-sm md:text-lg mt-1" style={{ color: C.brown }}>{ceremony.time}</p>
+              <span className="text-sm md:text-base tracking-widest uppercase" style={{ color: C.maroonDeep, fontFamily: "Marcellus, serif" }}>{ceremony.date}</span>
+              <p className="text-base md:text-lg mt-1" style={{ color: C.brown }}>{ceremony.time}</p>
               <div className="flex items-start gap-1.5 md:gap-2 mt-2 md:mt-4">
                 <MapPin size={17} color={C.green} className="mt-0.5 shrink-0 md:w-5 md:h-5" />
                 <div>
-                  <p className="text-sm md:text-lg font-medium" style={{ color: C.brown }}>{ceremony.venue}</p>
-                  <p className="text-xs md:text-sm" style={{ color: `${C.brown}99` }}>{ceremony.venueDetail}</p>
+                  <p className="text-base md:text-lg font-medium" style={{ color: C.brown }}>{ceremony.venue}</p>
+                  <p className="text-sm md:text-sm" style={{ color: `${C.brown}99` }}>{ceremony.venueDetail}</p>
                 </div>
               </div>
-              <a href={ceremony.mapUrl} target="_blank" rel="noreferrer" className="mt-3 md:mt-5 inline-flex items-center gap-1.5 text-xs md:text-sm font-medium uppercase tracking-wide px-4 py-1.5 md:px-6 md:py-2.5 rounded-full w-fit" style={{ background: C.green, color: C.ivory }}>
+              <a href={ceremony.mapUrl} target="_blank" rel="noreferrer" className="mt-3 md:mt-5 inline-flex items-center gap-1.5 text-sm md:text-sm font-medium uppercase tracking-wide px-4 py-1.5 md:px-6 md:py-2.5 rounded-full w-fit" style={{ background: C.green, color: C.ivory }}>
                 <MapPin size={14} /> View on Maps
               </a>
             </div>
@@ -266,7 +266,7 @@ export default function ProgramRoadmap() {
       <div className="max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto">
         <Reveal>
           <h2 className="text-center text-3xl md:text-5xl lg:text-6xl mb-2 md:mb-4" style={{ color: C.maroonDeep }}>The Journey Ahead</h2>
-          <p className="text-center text-sm md:text-lg mb-2" style={{ color: `${C.brown}99` }}>Tap each stop — every one reveals a different way</p>
+          <p className="text-center text-base md:text-lg mb-2" style={{ color: `${C.brown}99` }}>Tap each stop — every one reveals a different way</p>
         </Reveal>
         <div className="mt-8 md:mt-14">
           {ceremonies.map((c, i) => (

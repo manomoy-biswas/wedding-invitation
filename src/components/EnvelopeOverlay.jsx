@@ -74,8 +74,8 @@ export default function EnvelopeOverlay({ phase, onOpen }) {
         </div>
       </div>
 
-      <p className="text-sm tracking-[0.3em] uppercase" style={{ color: C.gold }}>{active ? "Opening..." : "Tap to Open"}</p>
-      <p className="text-xs mt-2" style={{ color: `${C.ivory}99` }}>Manomoy &amp; Rumki's Wedding Invitation</p>
+      <p className="text-base tracking-[0.3em] uppercase" style={{ color: C.gold }}>{active ? "Opening..." : "Tap to Open"}</p>
+      <p className="text-sm mt-2" style={{ color: `${C.ivory}99` }}>Manomoy &amp; Rumki's Wedding Invitation</p>
     </div>
   );
 }

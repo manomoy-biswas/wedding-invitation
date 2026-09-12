@@ -43,7 +43,7 @@ function HeartScratch({ label, value }) {
   return (
     <div className="relative w-24 sm:w-32 md:w-40" style={{ aspectRatio: `${CANVAS_W} / ${CANVAS_H}`, clipPath: "url(#heart-clip)", background: C.ivory }}>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-[9px] sm:text-xs uppercase tracking-wide" style={{ color: C.maroonDeep }}>{label}</span>
+        <span className="text-xs sm:text-sm uppercase tracking-wide" style={{ color: C.maroonDeep }}>{label}</span>
         <span className="text-lg sm:text-2xl" style={{ color: C.maroonDeep, fontFamily: "Marcellus, serif" }}>{value}</span>
       </div>
       {!revealed && (
@@ -76,7 +76,7 @@ export default function DateReveal() {
       </svg>
 
       <div className="relative z-10 max-w-2xl mx-auto">
-        <Reveal><p className="text-xs tracking-[0.25em] uppercase mb-1" style={{ color: C.gold }}>Save the Date</p></Reveal>
+        <Reveal><p className="text-sm tracking-[0.25em] uppercase mb-1" style={{ color: C.gold }}>Save the Date</p></Reveal>
         <Reveal delay={0.1}><p className="text-2xl sm:text-3xl mb-7 sm:mb-10" style={{ color: C.ivory }}>Scratch the hearts to reveal</p></Reveal>
         <div className="flex justify-center gap-5 sm:gap-8 md:gap-12 flex-wrap">
           <Reveal delay={0.15}><HeartScratch label="Day" value="25" /></Reveal>
